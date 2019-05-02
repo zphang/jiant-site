@@ -10,12 +10,12 @@ A few things you might want to know about `jiant`:
 - `jiant` is built on [PyTorch](https://pytorch.org). It also uses many components from [AllenNLP](https://github.com/allenai/allennlp) and HuggingFace PyTorch [implementations](https://github.com/huggingface/pytorch-pretrained-BERT) of BERT and GPT.
 - The name `jiant` doesn't mean much. The 'j' stands for JSALT. That's all the acronym we have.
 
-### Getting Started
+## Getting Started
 
 1. Clone `jiant` and its submodules.
 2. Check out our tutorial [here]()! 
 
-### Submodules
+## Submodules
 
 This project uses [git submodules](https://blog.github.com/2016-02-01-working-with-submodules/) to manage some dependencies on other research code, in particular for loading CoVe and the OpenAI transformer model. In order to make sure you get these repos when you download `jiant/`, add `--recursive` to your clone command:
 
@@ -28,7 +28,7 @@ If you already cloned and just need to get the submodules, you can run:
 git submodule update --init --recursive
 ```
 
-### Data Sources
+## Data Sources
 We currently support the below data sources 
 - GLUE/SuperGLUE data (downloadable [here](https://github.com/nyu-mll/jiant/blob/master/scripts/download_glue_data.py) )
 - Translation: WMT'14 EN-DE, WMT'17 EN-RU. Scripts to prepare the WMT data are in [`scripts/wmt/`](scripts/wmt/).
