@@ -57,42 +57,6 @@ tensorboard --logdir <exp_dir>/<run_name>/tensorboard
 
 `--remote_log` (or `-r`): use this to enable remote logging via Google Stackdriver. You can set up credentials and set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable; see [Stackdriver Logging Client Libraries](https://cloud.google.com/logging/docs/reference/libraries#client-libraries-usage-python).
 
-## Saving Preprocessed Data
-
-Because preprocessing is expensive (e.g. building vocab and indexing for very large tasks like WMT or BWB), we often want to run multiple experiments using the same preprocessing. So, we group runs using the same preprocessing in a single experiment directory (set using the ``exp_dir`` flag) in which we store all shared preprocessing objects. Later runs will load the stored preprocessing. We write run-specific information (logs, saved models, etc.) to a run-specific directory (set using flag ``run_dir``), usually nested in the experiment directory. Experiment directories are written in ``project_dir``. Overall the directory structure looks like:
-
-```
-project_dir  # directory for all experiments using jiant
-|-- exp1/  # directory for a set of runs training and evaluating on FooTask and BarTask
-|   |-- preproc/  # shared indexed data of FooTask and BarTask
-|   |-- vocab/  # shared vocabulary built from examples from FooTask and BarTask
-|   |-- FooTask/  # shared FooTask class object
-|   |-- BarTask/  # shared BarTask class object
-|   |-- run1/  # run directory with some hyperparameter settings
-|   |-- run2/  # run directory with some different hyperparameter settings
-|   |
-|   [...]
-|
-|-- exp2/  # directory for a runs with a different set of experiments, potentially using a different branch of the code
-|   |-- preproc/
-|   |-- vocab/
-|   |-- FooTask/
-|   |-- BazTask/
-|   |-- run1/
-|   |
-|   [...]
-|
-[...]
-```
-
-You should also set ``data_dir`` and  ``word_embs_file`` options to point to the directories containing the data (e.g. the output of the ``scripts/download_glue_data`` script) and word embeddings (optional, not needed when using ELMo, see later sections) respectively.
-
-To force rereading and reloading of the tasks, perhaps because you changed the format or preprocessing of a task, delete the objects in the directories named for the tasks (e.g., `QQP/`) or use the option ``reload_tasks = 1``.
-
-To force rebuilding of the vocabulary, perhaps because you want to include vocabulary for more tasks, delete the objects in `vocab/` or use the option ``reload_vocab = 1``.
-
-To force reindexing of a task's data, delete some or all of the objects in `preproc/` or use the option ``reload_index = 1`` and set ``reindex_tasks`` to the names of the tasks to be reindexed, e.g. ``reindex_tasks=\"sst,mnli\"``. You should do this whenever you rebuild the task objects or vocabularies.
-
 ## Models
 
 The core model is a shared BiLSTM with task-specific components. When a language modeling objective is included in the set of training tasks, we use a bidirectional language model for all tasks, which is constructed to avoid cheating on the language modeling tasks. We also provide bag of words and RNN sentence encoder.
@@ -176,6 +140,43 @@ Download the pretrained vectors located [here](https://fasttext.cc/docs/en/engli
 ### GloVe
 
 To use [GloVe pretrained word embeddings](https://nlp.stanford.edu/projects/glove/), download and extract the relevant files and set ``word_embs_file`` to the GloVe file.
+
+
+## Saving Preprocessed Data
+
+Because preprocessing is expensive (e.g. building vocab and indexing for very large tasks like WMT or BWB), we often want to run multiple experiments using the same preprocessing. So, we group runs using the same preprocessing in a single experiment directory (set using the ``exp_dir`` flag) in which we store all shared preprocessing objects. Later runs will load the stored preprocessing. We write run-specific information (logs, saved models, etc.) to a run-specific directory (set using flag ``run_dir``), usually nested in the experiment directory. Experiment directories are written in ``project_dir``. Overall the directory structure looks like:
+
+```
+project_dir  # directory for all experiments using jiant
+|-- exp1/  # directory for a set of runs training and evaluating on FooTask and BarTask
+|   |-- preproc/  # shared indexed data of FooTask and BarTask
+|   |-- vocab/  # shared vocabulary built from examples from FooTask and BarTask
+|   |-- FooTask/  # shared FooTask class object
+|   |-- BarTask/  # shared BarTask class object
+|   |-- run1/  # run directory with some hyperparameter settings
+|   |-- run2/  # run directory with some different hyperparameter settings
+|   |
+|   [...]
+|
+|-- exp2/  # directory for a runs with a different set of experiments, potentially using a different branch of the code
+|   |-- preproc/
+|   |-- vocab/
+|   |-- FooTask/
+|   |-- BazTask/
+|   |-- run1/
+|   |
+|   [...]
+|
+[...]
+```
+
+You should also set ``data_dir`` and  ``word_embs_file`` options to point to the directories containing the data (e.g. the output of the ``scripts/download_glue_data`` script) and word embeddings (optional, not needed when using ELMo, see later sections) respectively.
+
+To force rereading and reloading of the tasks, perhaps because you changed the format or preprocessing of a task, delete the objects in the directories named for the tasks (e.g., `QQP/`) or use the option ``reload_tasks = 1``.
+
+To force rebuilding of the vocabulary, perhaps because you want to include vocabulary for more tasks, delete the objects in `vocab/` or use the option ``reload_vocab = 1``.
+
+To force reindexing of a task's data, delete some or all of the objects in `preproc/` or use the option ``reload_index = 1`` and set ``reindex_tasks`` to the names of the tasks to be reindexed, e.g. ``reindex_tasks=\"sst,mnli\"``. You should do this whenever you rebuild the task objects or vocabularies.
 
 
 ## Update config files
