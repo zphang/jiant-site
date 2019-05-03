@@ -12,21 +12,7 @@ A few things you might want to know about `jiant`:
 
 ## Getting Started
 
-1. Clone `jiant` and its submodules.
-2. Check out our tutorial [here]()! 
-
-## Submodules
-
-This project uses [git submodules](https://blog.github.com/2016-02-01-working-with-submodules/) to manage some dependencies on other research code, in particular for loading CoVe and the OpenAI transformer model. In order to make sure you get these repos when you download `jiant/`, add `--recursive` to your clone command:
-
-```sh
-git clone --recursive git@github.com:jsalt18-sentence-repl/jiant.git jiant
-```
-
-If you already cloned and just need to get the submodules, you can run:
-```sh
-git submodule update --init --recursive
-```
+To find the setup instructions for using jiant and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/tree/master/tutorials/setup_tutorial.md)! 
 
 ## Data Sources
 We currently support the below data sources 
@@ -187,9 +173,9 @@ As some config arguments are renamed, you may encounter an error when loading pa
 python scripts/update_config.py <path_to_file>
 ```
 
-## Tutorials
+## Adding a New Task
 
-To add a new task, refer to [INSERT TUTORIAL LINK]
+To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/tree/master/tutorials/adding_tasks.md)!
 
 
 ## Suggested Citation
@@ -248,3 +234,7 @@ Right now, we only support training in two stages. Training in more than two sta
    - load_target_train_checkpoint_arg=/path/to/saved/run
    - pretrain_tasks=“task_b1,task_b2, target_tasks=task_c1,task_c2”
 
+
+***Can I evaluate on tasks that weren't part of the training process (not in pretraining or target task training)?***
+
+Not at the current moment. That's in store for 1.0!
