@@ -12,7 +12,7 @@ A few things you might want to know about `jiant`:
 
 ## Getting Started
 
-To find the setup instructions for using jiant and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/tree/master/tutorials/setup_tutorial.md)! 
+To find the setup instructions for using jiant and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/setup_tutorial.md)! 
 
 ## Data Sources
 We currently support the below data sources 
@@ -175,7 +175,7 @@ python scripts/update_config.py <path_to_file>
 
 ## Adding a New Task
 
-To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/tree/master/tutorials/adding_tasks.md)!
+To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/adding_tasks.md)!
 
 
 ## Suggested Citation
