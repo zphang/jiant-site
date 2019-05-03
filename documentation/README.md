@@ -232,7 +232,19 @@ Post an issue here on GitHub if you have any problems, and create a pull request
 
 This probably means that you probably ran the script before downloading the data for that task. Thus, delete the file from preproc and then run main.py again to build the data splits from scratch.
 
+***How can I pass BERT embeddings straight to the classifier without a sentence encoder?***
+
+Right now, you need to set `skip_embs=1` and `sep_embs_for_skip=1` just because of the current way 
+our logic works. We're currently streamlining the logic around `sep_embs_for_skip` for the 1.0 release!
+
+
 ***How can I do STILTS-style training?***
 
-Right now, we only support training in two stages. To train in three stages, first multitasking in task set A, then task set B, then finetuning on task set C, you will need to pretrain on A (pretrain_tasks = setA and target_tasks = "", then save the results. Then, you need to load those checkpoints in another run, where your pretrain_tasks is set to set B, and target_tasks is set to task set C. 
+Right now, we only support training in two stages. Training in more than two stages is possible, but will require you to divide your training up into multiple runs. For instance, assume you want to run multitask training on task set A, and then train on task set B, and finally fine-tune on task set C. You would perform the following:
+- First run: pretrain on task set A
+   - pretrain_tasks=“task_a1,task_a2”, target_tasks=“”
+- Second run: load checkpoints, and train on task set B and then C:
+   - load_model = 1
+   - load_target_train_checkpoint_arg=/path/to/saved/run
+   - pretrain_tasks=“task_b1,task_b2, target_tasks=task_c1,task_c2”
 
