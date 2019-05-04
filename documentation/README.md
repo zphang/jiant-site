@@ -1,4 +1,4 @@
-# `jiant`: The Manual
+# jiant: The Manual
 
 ## Getting Started
 
@@ -103,7 +103,7 @@ If you are training on multiple tasks, you can vary the sampling weights with ``
 
 We use a shared global optimizer and LR scheduler for all tasks. In the global case, we use the macro average of each task's validation metrics to do LR scheduling and early stopping. When doing multi-task training and at least one task's validation metric should decrease (e.g. perplexity), we invert tasks whose metric should decrease by averaging ``1 - (val_metric / dec_val_scale)``, so that the macro-average will be well-behaved.
 
-### Pretraing vs. Target-Task Training
+### Pretraining vs. Target-Task Training
 
 Within a run, tasks are distinguished between training tasks (`pretrain_tasks`) and evaluation tasks (`target_tasks`). The logic of ``main.py`` is that the entire model is pretrained on all the `pretrain_tasks`, then the best model is then loaded, and task-specific components are trained for each of the evaluation tasks with a shared sentence encoder that is either frozen or reset between `target_tasks` (controlled by `transfer_paradigm`).
 You can control which steps are performed or skipped by setting the flags ``do_pretrain, do_target_task_training, do_full_eval``.
