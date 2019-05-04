@@ -76,6 +76,8 @@ To use the OpenAI transformer model, set `openai_transformer = 1`, download the 
 
 To use [BERT](https://arxiv.org/abs/1810.04805) architecture, set ``bert_model_name`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
 
+[`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using BERT on a single task, and can serve as a reference.
+
 #### Plain Transformer
 
 We also include an experimental option to use a shared [Transformer](https://arxiv.org/abs/1706.03762) in place of the shared BiLSTM by setting ``sent_enc = transformer``. When using a Transformer, we use the [Noam learning rate scheduler](https://github.com/allenai/allennlp/blob/master/allennlp/training/learning_rate_schedulers.py#L84), as that seems important to training the Transformer thoroughly. 
@@ -119,6 +121,7 @@ The mode will create a copy of the full model for each target task after pretrai
 Setting `transfer_paradigm = frozen` will only train the target-task specific components while training for a target task.
 If using ELMo and `sep_embs_for_skip = 1`, we will also learn a task-specific set of ELMo's layer-mixing weights.
 
+[`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using a single task without pretraining, and can serve as a reference.
 
 ## Saving Preprocessed Data
 
