@@ -219,6 +219,9 @@ Right now, we only support training in two stages. Training in more than two sta
    - load_model = 1
    - load_target_train_checkpoint_arg=/path/to/saved/run
    - pretrain_tasks=“task_b1,task_b2, target_tasks=task_c1,task_c2”
+   
+***How can I train only one task?***
+If you set do_pretrain = 1, do_target_train = 0, put your task in pretrain_tasks, and set target_tasks = "", then jiant will treat it as a normal non-multitask training experiment. 
 
 ***Can I evaluate on tasks that weren't part of the training process (not in pretraining or target task training)?***
 
