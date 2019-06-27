@@ -201,6 +201,10 @@ This package is released under the [MIT License](LICENSE.md). The material in th
 
 ## FAQs
 
+***I'm seeing gcc++ errors when using conda to set up my environment.***
+
+Installing AllenNLP, which we build on, requires a working C++ compiler. See advice [here (MacOS Mojave only)](https://stackoverflow.com/questions/52509602/cant-compile-c-program-on-a-mac-after-upgrade-to-mojave) or [here](https://github.com/allenai/allennlp/issues/2473).
+
 ***I changed/updated the code, and my experiment broke with errors that don't seem related to the change. What should I do?***
 
 Our preprocessing pipeline relies on Python pickles to store some intermediate data, and the format of these pickles is closely tied to the internal structure of some of our code. Because of this, you may see a variety of strange errrors if you try to use preprocessed data from an old experiment that was created with a previous version of the code.
