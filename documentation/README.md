@@ -201,6 +201,12 @@ This package is released under the [MIT License](LICENSE.md). The material in th
 
 ## FAQs
 
+***I changed/updated the code, and my experiment broke with errors that don't seem related to the change. What should I do?***
+
+Our preprocessing pipeline relies on Python pickles to store some intermediate data, and the format of these pickles is closely tied to the internal structure of some of our code. Because of this, you may see a variety of strange errrors if you try to use preprocessed data from an old experiment that was created with a previous version of the code.
+
+To work around this, try your experiment again without the old preprocessed data. If you don't need your old log or checkpoints, simply delete your experiment directory (`$JIANT_PROJECT_PREFIX/your_experiment_name_here`) or move to a new one (by changing or overriding the `exp_name` config option). If you'd like to save as much old data as possible, try deleting the `tasks` subdirectory of your experiment directory, and if that doesn't work, try deleting `preproc` and `vocab` as well.
+
 ***It seems like my preproc/{task}\_\_{split}.data has nothing in it!***
 
 This probably means that you probably ran the script before downloading the data for that task. Thus, delete the file from preproc and then run main.py again to build the data splits from scratch.
@@ -212,7 +218,9 @@ our logic works. We're currently streamlining the logic around `sep_embs_for_ski
 
 ***How can I do STILTS-style training?***
 
-Right now, we only support training in two stages. Training in more than two stages is possible, but will require you to divide your training up into multiple runs. For instance, assume you want to run multitask training on task set A, and then train on task set B, and finally fine-tune on task set C. You would perform the following:
+For a typical STILTs experiment on top of BERT, GPT, ELMo, or some other supported pre-trained encoder, you can simply start from an effective configuration like [`config/superglue_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/superglue-bert.conf) set `pretrain_tasks` to your intermediate task and `target_tasks` to your target task.
+
+Right now, we only support training in two stages, so if you'd like to do the initial pretrianing stage from scratch, things get more complicated. Training in more than two stages is possible, but will require you to divide your training up into multiple runs. For instance, assume you want to run multitask training on task set A, and then train on task set B, and finally fine-tune on task set C. You would perform the following:
 - First run: pretrain on task set A
    - pretrain_tasks=“task_a1,task_a2”, target_tasks=“”
 - Second run: load checkpoints, and train on task set B and then C:
@@ -225,7 +233,7 @@ If you set do_pretrain = 1, do_target_train = 0, put your task in pretrain_tasks
 
 ***Can I evaluate on tasks that weren't part of the training process (not in pretraining or target task training)?***
 
-Not at the current moment. That's in store for 1.0!
+Not at the moment. We're working on it!
 
 
 ## Getting Help
