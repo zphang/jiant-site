@@ -12,7 +12,8 @@ We currently support the below tasks, plus several more documented only in the c
 - All [SuperGLUE](https://gluebenchmark.com) tasks (downloadable [here](https://github.com/nyu-mll/jiant/blob/master/scripts/download_superglue_data.py))
 - DisSent: Details for preparing the data are in [`scripts/dissent/README`](scripts/dissent/README).
 - CCG: Details for preparing the data are in [`scripts/ccg/README`](scripts/ccg/README).
-- [SWAG](https://arxiv.org/pdf/1808.05326.pdf), data can be downloaded from the [SWAG website](https://rowanzellers.com/swag/). 
+- [SWAG](https://arxiv.org/pdf/1808.05326.pdf). The data can be downloaded from [SWAG website](https://rowanzellers.com/swag/). 
+
 Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`src/tasks`](https://github.com/nyu-mll/jiant/tree/master/src/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
 
 To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/adding_tasks.md)!
@@ -102,7 +103,7 @@ We use a shared global optimizer and LR scheduler for all tasks. In the global c
 Within a run, training is distinguished between pretraining and target training phases. In the pretraining phase, the `pretrain tasks` are trained in a multi-task fashion. In the target train phase, each task is trained one at a time, and there is no shared training of the encoder in the target train phase.
  Specify pretraining tasks with ``pretrain_tasks = $pretrain_tasks`` where ``$pretrain_tasks`` is a comma-separated list of task names; similarly use ``target_tasks`` to specify the tasks to target train on. 
 
-The most extensive way to use `jiant` is to pretrian on a set of tasks, before training on target tasks. In this method, the best model from the pretraining stage is loaded and used to train each of the target tasks. This shared sentence encoder can either be frozen or finetuned (controlled by `transfer_paradigm`).`transfer_paradigm = finetune` will train the shared encoder alongside the task specific parts of the model, whereas setting `transfer_paradigm = frozen` will only train the target-task specific components while training for a target task.
+The most extensive way to use `jiant` is to pretrain on a set of tasks, before training on target tasks. In this method, the best model from the pretraining stage is loaded and used to train each of the target tasks. This shared sentence encoder can either be frozen or finetuned (controlled by `transfer_paradigm`).`transfer_paradigm = finetune` will train the shared encoder alongside the task specific parts of the model, whereas setting `transfer_paradigm = frozen` will only train the target-task specific components while training for a target task.
 
 You can control which steps are performed or skipped by setting the flags ``do_pretrain, do_target_task_training, do_full_eval``. 
 
