@@ -7,16 +7,12 @@ To find the setup instructions for using jiant and to run a simple example demo 
 
 ## Supported Tasks
 
-We currently support the below data sources, plus several more documented only in the code:
+We currently support the below tasks, plus several more documented only in the code:
 - All [GLUE](https://gluebenchmark.com) tasks (downloadable [here](https://github.com/nyu-mll/jiant/blob/master/scripts/download_glue_data.py))
 - All [SuperGLUE](https://gluebenchmark.com) tasks (downloadable [here](https://github.com/nyu-mll/jiant/blob/master/scripts/download_superglue_data.py))
-- Translation: WMT'14 EN-DE, WMT'17 EN-RU. Scripts to prepare the WMT data are in [`scripts/wmt/`](scripts/wmt/).
-- Language modeling: [Billion Word Benchmark](http://www.statmt.org/lm-benchmark/), [WikiText103](https://einstein.ai/research/the-wikitext-long-term-dependency-language-modeling-dataset). We use the English sentence tokenizer from [NLTK toolkit](https://www.nltk.org/) [Punkt Tokenizer Models](http://www.nltk.org/nltk_data/) to preprocess WikiText103 corpus. Note that it's only used in breaking paragraphs into sentences. It will use default tokenizer on word level as all other tasks unless otherwise specified. We don't do any preprocessing on BWB corpus.  
 - DisSent: Details for preparing the data are in [`scripts/dissent/README`](scripts/dissent/README).
-- DNC (**D**iverse **N**atural Language Inference **C**ollection) recast data: The DNC is available [online](https://github.com/decompositional-semantics-initiative/DNC). Follow the instructions described there to download the DNC.
 - CCG: Details for preparing the data are in [`scripts/ccg/README`](scripts/ccg/README).
-- Edge probing analysis tasks: see [`probing/data`](probing/data/README.md) for more information.
-
+- [SWAG](https://arxiv.org/pdf/1808.05326.pdf), data can be downloaded from the [SWAG website](https://rowanzellers.com/swag/). 
 Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`src/tasks`](https://github.com/nyu-mll/jiant/tree/master/src/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
 
 To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/adding_tasks.md)!
@@ -48,7 +44,7 @@ Models in `jiant` generally have three components: A shared input component (typ
 #### ELMo
 
 We use the ELMo implementation provided by [AllenNLP](https://github.com/allenai/allennlp/blob/master/tutorials/how_to/elmo.md).
-To use ELMo, set ``elmo`` to 1.
+To use ELMo, set ``input_module = elmo``.
 By default, AllenNLP will download and cache the pretrained ELMo weights. If you want to use a particular file containing ELMo weights, set ``elmo_weight_file_path = path/to/file``.
 
 To use only the _character-level CNN word encoder_ from ELMo, set `elmo_chars_only = 1`.
@@ -60,11 +56,11 @@ To use CoVe, clone the repo and set the option ``path_to_cove = "/path/to/cove/r
 
 #### FastText
 
-Download the pretrained vectors located [here](https://fasttext.cc/docs/en/english-vectors.html), preferably the 300-dimensional Common Crawl vectors. Set the ``word_emb_file`` to point to the .vec file.
+Download the pretrained vectors located [here](https://fasttext.cc/docs/en/english-vectors.html), preferably the 300-dimensional Common Crawl vectors. Set the ``word_emb_file`` to point to the .vec file. Lastly, set ``input_module = fastText``.
 
 #### GloVe
 
-To use [GloVe pretrained word embeddings](https://nlp.stanford.edu/projects/glove/), download and extract the relevant files and set ``word_embs_file`` to the GloVe file.
+To use [GloVe pretrained word embeddings](https://nlp.stanford.edu/projects/glove/), download and extract the relevant files and set ``word_embs_file`` to the GloVe file. Lastly, set ``input_module = glove``.
 
 ### Specialized Shared Encoders
 
@@ -74,13 +70,9 @@ To use the OpenAI transformer model, set `openai_transformer = 1`, download the 
 
 #### BERT
 
-To use [BERT](https://arxiv.org/abs/1810.04805) architecture, set ``bert_model_name`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
+To use [BERT](https://arxiv.org/abs/1810.04805) architecture, set ``input_module`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
 
 [`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using BERT on a single task, and can serve as a reference.
-
-#### Plain Transformer
-
-We also include an experimental option to use a shared [Transformer](https://arxiv.org/abs/1706.03762) in place of the shared BiLSTM by setting ``sent_enc = transformer``. When using a Transformer, we use the [Noam learning rate scheduler](https://github.com/allenai/allennlp/blob/master/allennlp/training/learning_rate_schedulers.py#L84), as that seems important to training the Transformer thoroughly. 
 
 #### Ordered Neurons (ON-LSTM) Grammar Induction Model
 
@@ -105,20 +97,22 @@ If you are training on multiple tasks, you can vary the sampling weights with ``
 
 We use a shared global optimizer and LR scheduler for all tasks. In the global case, we use the macro average of each task's validation metrics to do LR scheduling and early stopping. When doing multi-task training and at least one task's validation metric should decrease (e.g. perplexity), we invert tasks whose metric should decrease by averaging ``1 - (val_metric / dec_val_scale)``, so that the macro-average will be well-behaved.
 
-### Pretraining vs. Target-Task Training
+### How to use `jiant` to run experiments
 
-Within a run, tasks are distinguished between training tasks (`pretrain_tasks`) and evaluation tasks (`target_tasks`). The logic of ``main.py`` is that the entire model is pretrained on all the `pretrain_tasks`, then the best model is then loaded, and task-specific components are trained for each of the evaluation tasks with a shared sentence encoder that is either frozen or reset between `target_tasks` (controlled by `transfer_paradigm`).
-You can control which steps are performed or skipped by setting the flags ``do_pretrain, do_target_task_training, do_full_eval``.
+Within a run, training is distinguished between pretraining and target training phases. In the pretraining phase, the `pretrain tasks` are trained in a multi-task fashion. In the target train phase, each task is trained one at a time, and there is no shared training of the encoder in the target train phase.
+ Specify pretraining tasks with ``pretrain_tasks = $pretrain_tasks`` where ``$pretrain_tasks`` is a comma-separated list of task names; similarly use ``target_tasks`` to specify the tasks to target train on. 
 
-Specify training tasks with ``pretrain_tasks = $pretrain_tasks`` where ``$pretrain_tasks`` is a comma-separated list of task names; similarly use ``target_tasks`` to specify the eval-only tasks.
+The most extensive way to use `jiant` is to pretrian on a set of tasks, before training on target tasks. In this method, the best model from the pretraining stage is loaded and used to train each of the target tasks. This shared sentence encoder can either be frozen or finetuned (controlled by `transfer_paradigm`).`transfer_paradigm = finetune` will train the shared encoder alongside the task specific parts of the model, whereas setting `transfer_paradigm = frozen` will only train the target-task specific components while training for a target task.
 
-For example, ``python main.py --overrides "pretrain_tasks = mnli, target_tasks = \"sst,mprc\""`` (note the escaped quotes in command line arguments for lists).
-Note: if you want to train and evaluate on a task, that task must be in both ``pretrain_tasks`` and ``target_tasks``.
+You can control which steps are performed or skipped by setting the flags ``do_pretrain, do_target_task_training, do_full_eval``. 
 
-We support two modes of adapting pretrained models to target tasks. 
-Setting `transfer_paradigm = finetune` will fine-tune the entire model while training for a target task.
-The mode will create a copy of the full model for each target task after pretraining.
-Setting `transfer_paradigm = frozen` will only train the target-task specific components while training for a target task.
+More specifically:
+
+* If you would like to simply multitask train on tasks, then simply set ``do_pretrain=1 and target_task_training = 0.``
+* If you would like to train an encoder on a set of tasks sequentially without sharing the encoder, set ``do_pretrain=0 and target_task_training = 1.``
+* If you would like to evaluate on some tasks, based on a previously `jiant` trained model, set ``load_eval_checkpoint`` to the path of that model checkpoint, and then set ``do_pretrain=0, do_target_task_training=0, do_full_eval=1``.
+
+
 If using ELMo and `sep_embs_for_skip = 1`, we will also learn a task-specific set of ELMo's layer-mixing weights.
 
 [`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using a single task without pretraining, and can serve as a reference.
@@ -231,13 +225,6 @@ Right now, we only support training in two stages, so if you'd like to do the in
    - load_model = 1
    - load_target_train_checkpoint_arg=/path/to/saved/run
    - pretrain_tasks=“task_b1,task_b2, target_tasks=task_c1,task_c2”
-   
-***How can I train only one task?***
-If you set do_pretrain = 1, do_target_train = 0, put your task in pretrain_tasks, and set target_tasks = "", then jiant will treat it as a normal non-multitask training experiment. 
-
-***Can I evaluate on tasks that weren't part of the training process (not in pretraining or target task training)?***
-
-Not at the moment. We're working on it!
 
 
 ## Getting Help
