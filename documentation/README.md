@@ -14,7 +14,7 @@ We currently support the below tasks, plus several more documented only in the c
 - CCG: Details for preparing the data are in [`scripts/ccg/README`](scripts/ccg/README).
 - [SWAG](https://arxiv.org/pdf/1808.05326.pdf). The data can be downloaded from [SWAG website](https://rowanzellers.com/swag/). 
 
-Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`src/tasks`](https://github.com/nyu-mll/jiant/tree/master/src/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
+Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`jiant/tasks`](https://github.com/nyu-mll/jiant/tree/master/jiant/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
 
 To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/adding_tasks.md)!
 
@@ -67,7 +67,7 @@ To use [GloVe pretrained word embeddings](https://nlp.stanford.edu/projects/glov
 
 #### OpenAI GPT
 
-To use the OpenAI transformer model, set `openai_transformer = 1`, download the [model](https://github.com/openai/finetune-transformer-lm) folder that contains pre-trained models, and place it under `src/openai_transformer_lm/pytorch_huggingface/`.
+To use the OpenAI transformer model, set `openai_transformer = 1`, download the [model](https://github.com/openai/finetune-transformer-lm) folder that contains pre-trained models, and place it under `jiant/openai_transformer_lm/pytorch_huggingface/`.
 
 #### BERT
 
