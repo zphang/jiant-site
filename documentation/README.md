@@ -200,6 +200,10 @@ This package is released under the [MIT License](LICENSE.md). The material in th
 
 Installing AllenNLP, which we build on, requires a working C++ compiler. See advice [here (MacOS Mojave only)](https://stackoverflow.com/questions/52509602/cant-compile-c-program-on-a-mac-after-upgrade-to-mojave) or [here](https://github.com/allenai/allennlp/issues/2473).
 
+***I'm seeing `ModuleNotFoundError: No module named 'src'` or `ImportError: bad magic number` when starting a run.***
+
+This will occur if you try to reuse preprocessed files from jiant 0.9 after upgrading to a newer version. Delete your experiment directories and try again, or see the question immediately below for more information.
+
 ***I changed/updated the code, and my experiment broke with errors that don't seem related to the change. What should I do?***
 
 Our preprocessing pipeline relies on Python pickles to store some intermediate data, and the format of these pickles is closely tied to the internal structure of some of our code. Because of this, you may see a variety of strange errrors if you try to use preprocessed data from an old experiment that was created with a previous version of the code.
