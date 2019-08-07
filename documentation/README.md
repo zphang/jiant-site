@@ -1,4 +1,6 @@
-# jiant: The Manual
+# jiant 1.0: The Manual
+
+Note: This document describes the latest _release_ version of jiant. Additional unreleased changes may be available on the GitHub master branch.
 
 ## Getting Started
 
@@ -71,9 +73,9 @@ To use the OpenAI transformer model, set `openai_transformer = 1`, download the 
 
 #### BERT
 
-To use [BERT](https://arxiv.org/abs/1810.04805) architecture, set ``input_module`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
+To use [BERT](https://arxiv.org/abs/1810.04805), set ``input_module`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
 
-[`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using BERT on a single task, and can serve as a reference.
+[`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using BERT on a single task, and can serve as a reference. 
 
 #### Ordered Neurons (ON-LSTM) Grammar Induction Model
 
