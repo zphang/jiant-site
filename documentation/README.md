@@ -1,4 +1,4 @@
-# jiant 1.0: The Manual
+# jiant 1.1: The Manual
 
 Note: This document describes the latest _release_ version of jiant. Additional unreleased changes may be available on the GitHub master branch.
 
@@ -39,7 +39,7 @@ tensorboard --logdir <exp_dir>/<run_name>/tensorboard
 
 ## Models
 
-Models in `jiant` generally have three components: A shared input component (typically a word embedding layer, or a pretrained ELMo, GPT, or BERT model), a shared general-purpose encoder component which sits on top of the input component (optional, typically a BiLSTM trained from scratch within `jiant`, specified by `sent_enc`), and task-specific components for each tasks.
+Models in `jiant` generally have three components: A shared input component (typically a word embedding layer, or a pretrained ELMo, GPT, BERT, or XLNet model), a shared general-purpose encoder component which sits on top of the input component (optional, typically a BiLSTM trained from scratch within `jiant`, specified by `sent_enc`), and task-specific components for each tasks.
 
 
 ### Input Components
@@ -71,9 +71,9 @@ To use [GloVe pretrained word embeddings](https://nlp.stanford.edu/projects/glov
 
 To use the OpenAI transformer model, set `openai_transformer = 1`, download the [model](https://github.com/openai/finetune-transformer-lm) folder that contains pre-trained models, and place it under `jiant/openai_transformer_lm/pytorch_huggingface/`.
 
-#### BERT
+#### BERT or XLNet
 
-To use [BERT](https://arxiv.org/abs/1810.04805), set ``input_module`` to one of the models listed [here](https://github.com/huggingface/pytorch-pretrained-BERT#loading-google-ai-or-openai-pre-trained-weigths-or-pytorch-dump), e.g. ``bert-base-cased``. You should also set ``tokenizer`` to the BERT model name used in order to ensure you are using the same tokenization and vocabulary. When using BERT, we generally follow the procedures set out in the original work as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the first representation of the sequence (corresponding to the special `[CLS]` token) as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
+To use [BERT](https://arxiv.org/abs/1810.04805) or [XLNet](https://arxiv.org/abs/1906.08237), set ``input_module`` to one of the relevant model names summarized in [defaults.conf](https://github.com/nyu-mll/jiant/blob/master/config/defaults.conf) and listed in full [here](https://huggingface.co/pytorch-transformers/pretrained_models.html), e.g. ``bert-base-cased``. When using these models, we generally follow the procedures set out in the original works as closely as possible: For pair sentence tasks, we concatenate the sentences with a special `[SEP]` token. Rather than max-pooling, we take the representation of the  the special `[CLS]` token as the representation of the entire sequence. We also have support for the version of Adam that was used in training BERT (``optimizer = bert_adam``).
 
 [`copa_bert.conf`](https://github.com/nyu-mll/jiant/blob/master/config/copa_bert.conf) shows an example setup using BERT on a single task, and can serve as a reference. 
 
@@ -157,15 +157,6 @@ To force rebuilding of the vocabulary, perhaps because you want to include vocab
 To force reindexing of a task's data, delete some or all of the objects in `preproc/` or use the option ``reload_index = 1`` and set ``reindex_tasks`` to the names of the tasks to be reindexed, e.g. ``reindex_tasks=\"sst,mnli\"``. You should do this whenever you rebuild the task objects or vocabularies.
 
 
-## Updating `conf` Files
-
-As some config arguments are renamed, you may encounter an error when loading past config files (e.g. params.conf) created before Oct 24, 2018. To update a config file, run
-
-```sh
-python scripts/update_config.py <path_to_file>
-```
-
-
 ## Suggested Citation
 
 If you use `jiant` in academic work, please cite it directly:
@@ -173,7 +164,7 @@ If you use `jiant` in academic work, please cite it directly:
 ```
 @misc{wang2019jiant,
     author = {Alex Wang and Ian F. Tenney and Yada Pruksachatkun and Katherin Yu and Jan Hula and Patrick Xia and Raghu Pappagari and Shuning Jin and R. Thomas McCoy and Roma Patel and Yinghui Huang and Jason Phang and Edouard Grave and Najoung Kim and Phu Mon Htut and Thibault F'{e}vry and Berlin Chen and Nikita Nangia and Haokun Liu and and Anhad Mohananey and Shikha Bordia and Ellie Pavlick and Samuel R. Bowman},
-    title = {{jiant} 0.9: A software toolkit for research on general-purpose text understanding models},
+    title = {{jiant} 1.1: A software toolkit for research on general-purpose text understanding models},
     howpublished = {\url{http://jiant.info/}},
     year = {2019}
 }
@@ -219,7 +210,7 @@ This probably means that you probably ran the script before downloading the data
 ***How can I pass BERT embeddings straight to the classifier without a sentence encoder?***
 
 Right now, you need to set `skip_embs=1` and `sep_embs_for_skip=1` just because of the current way 
-our logic works. We're currently streamlining the logic around `sep_embs_for_skip` for the 1.0 release!
+our logic works. We're currently streamlining the logic around `sep_embs_for_skip`...
 
 ***How can I do STILTS-style training?***
 
