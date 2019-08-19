@@ -14,7 +14,9 @@ We currently support the below tasks, plus several more documented only in the c
 - All [SuperGLUE](https://gluebenchmark.com) tasks (downloadable [here](https://github.com/nyu-mll/jiant/blob/master/scripts/download_superglue_data.py))
 - DisSent: Details for preparing the data are in [`scripts/dissent/README`](scripts/dissent/README).
 - CCG: Details for preparing the data are in [`scripts/ccg/README`](scripts/ccg/README).
-- [SWAG](https://arxiv.org/pdf/1808.05326.pdf). The data can be downloaded from [SWAG website](https://rowanzellers.com/swag/). 
+- [SWAG](https://arxiv.org/pdf/1808.05326.pdf). The data can be downloaded from [SWAG website](https://rowanzellers.com/swag/).
+- [QA-SRL](http://qasrl.org/). The data can be downloaded using the script provided [here](https://github.com/uwnlp/qasrl-bank). The resulting data folder `qasrl-v2` should be renamed to `QASRL`.  
+
 
 Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`jiant/tasks`](https://github.com/nyu-mll/jiant/tree/master/jiant/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
 
