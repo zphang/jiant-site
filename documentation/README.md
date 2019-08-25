@@ -183,6 +183,21 @@ To exactly reproduce experiments from [the ELMo's Friends paper](https://arxiv.o
 For the [edge probing paper](https://openreview.net/forum?id=SJzSgnRcKX), see the [probing/](probing/) directory.
 
 
+## Releases
+
+Releases are identified using git tags and distributed via PyPI for pip installation. After passing CI tests and creating a new git tag for a release, it can be uploaded to PyPI by running:
+
+```bash
+# create distribution
+python setup.py sdist bdist_wheel
+
+# upload to PyPI
+python -m twine upload dist/*
+```
+
+More details can be found in [setup.py](https://github.com/nyu-mll/jiant/blob/master/setup.py).
+
+
 ## License
 
 This package is released under the [MIT License](LICENSE.md). The material in the allennlp_mods directory is based on [AllenNLP](https://github.com/allenai/allennlp), which was originally released under the Apache 2.0 license.
