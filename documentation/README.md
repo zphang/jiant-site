@@ -1,10 +1,10 @@
-# jiant 1.2: The Manual
+# `jiant` 1.2: The Manual
 
-Note: This document describes the latest _release_ version of jiant. Additional unreleased changes may be available on the GitHub master branch.
+Note: This document describes the latest _release_ version of `jiant`. Additional unreleased changes may be available on the GitHub master branch.
 
 ## Getting Started
 
-To find the setup instructions for using jiant and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/setup_tutorial.md)! 
+To find the setup instructions for using `jiant` and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/setup_tutorial.md)! 
 
 
 ## Supported Tasks
@@ -210,7 +210,7 @@ Installing AllenNLP, which we build on, requires a working C++ compiler. See adv
 
 ***I'm seeing `ModuleNotFoundError: No module named 'src'` or `ImportError: bad magic number` when starting a run.***
 
-This will occur if you try to reuse preprocessed files from jiant 0.9 after upgrading to a newer version. Delete your experiment directories and try again, or see the question immediately below for more information.
+This will occur if you try to reuse preprocessed files from `jiant` 0.9 after upgrading to a newer version. Delete your experiment directories and try again, or see the question immediately below for more information.
 
 ***I changed/updated the code, and my experiment broke with errors that don't seem related to the change. What should I do?***
 
