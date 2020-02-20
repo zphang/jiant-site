@@ -1,10 +1,10 @@
-# jiant 1.1: The Manual
+# `jiant` 1.2: The Manual
 
-Note: This document describes the latest _release_ version of jiant. Additional unreleased changes may be available on the GitHub master branch.
+Note: This document describes the latest _release_ version of `jiant`. Additional unreleased changes may be available on the GitHub master branch.
 
 ## Getting Started
 
-To find the setup instructions for using jiant and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/setup_tutorial.md)! 
+To find the setup instructions for using `jiant` and to run a simple example demo experiment using data from GLUE, follow this [getting started tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/setup_tutorial.md)! 
 
 
 ## Supported Tasks
@@ -17,14 +17,12 @@ We currently support the below tasks, plus several more documented only in the c
 - [SWAG](https://arxiv.org/pdf/1808.05326.pdf). The data can be downloaded from [SWAG website](https://rowanzellers.com/swag/).
 - [QA-SRL](http://qasrl.org/). The data can be downloaded using the script provided [here](https://github.com/uwnlp/qasrl-bank). The resulting data folder `qasrl-v2` should be renamed to `QASRL`.  
 
-
 Data files should be in the directory specified by `data_dir` in a subdirectory corresponding to the task, as specified in the task definition (see [`jiant/tasks`](https://github.com/nyu-mll/jiant/tree/master/jiant/tasks)). The GLUE and SuperGLUE download scripts should create acceptable directories automatically.
 
 To add a new task, refer to this [tutorial](https://github.com/nyu-mll/jiant/blob/master/tutorials/adding_tasks.md)!
 
 
-## Command-Line Options
-
+## Command-Line 
 All model configuration is handled through the config file system and the `--overrides` flag, but there are also a few command-line arguments that control the behavior of `main.py`. In particular:
 
 `--tensorboard` (or `-t`): use this to run a [Tensorboard](https://www.tensorflow.org/guide/summaries_and_tensorboard) server while the trainer is running, serving on the port specified by `--tensorboard_port` (default is `6006`).
@@ -165,8 +163,8 @@ If you use `jiant` in academic work, please cite it directly:
 
 ```
 @misc{wang2019jiant,
-    author = {Alex Wang and Ian F. Tenney and Yada Pruksachatkun and Katherin Yu and Jan Hula and Patrick Xia and Raghu Pappagari and Shuning Jin and R. Thomas McCoy and Roma Patel and Yinghui Huang and Jason Phang and Edouard Grave and Najoung Kim and Phu Mon Htut and Thibault F'{e}vry and Berlin Chen and Nikita Nangia and Haokun Liu and and Anhad Mohananey and Shikha Bordia and Nicolas Patry and Ellie Pavlick and Samuel R. Bowman},
-    title = {{jiant} 1.1: A software toolkit for research on general-purpose text understanding models},
+    author = {Alex Wang and Ian F. Tenney and Yada Pruksachatkun and Katherin Yu and Jan Hula and Patrick Xia and Raghu Pappagari and Shuning Jin and R. Thomas McCoy and Roma Patel and Yinghui Huang and Jason Phang and Edouard Grave and Haokun Liu and Najoung Kim and Phu Mon Htut and Thibault F'{e}vry and Berlin Chen and Nikita Nangia and Anhad Mohananey and Katharina Kann and Shikha Bordia and Nicolas Patry and David Benton and Ellie Pavlick and Samuel R. Bowman},
+    title = {\texttt{jiant} 1.2: A software toolkit for research on general-purpose text understanding models},
     howpublished = {\url{http://jiant.info/}},
     year = {2019}
 }
@@ -185,6 +183,21 @@ To exactly reproduce experiments from [the ELMo's Friends paper](https://arxiv.o
 For the [edge probing paper](https://openreview.net/forum?id=SJzSgnRcKX), see the [probing/](probing/) directory.
 
 
+## Releases
+
+Releases are identified using git tags and distributed via PyPI for pip installation. After passing CI tests and creating a new git tag for a release, it can be uploaded to PyPI by running:
+
+```bash
+# create distribution
+python setup.py sdist bdist_wheel
+
+# upload to PyPI
+python -m twine upload dist/*
+```
+
+More details can be found in [setup.py](https://github.com/nyu-mll/jiant/blob/master/setup.py).
+
+
 ## License
 
 This package is released under the [MIT License](LICENSE.md). The material in the allennlp_mods directory is based on [AllenNLP](https://github.com/allenai/allennlp), which was originally released under the Apache 2.0 license.
@@ -197,7 +210,7 @@ Installing AllenNLP, which we build on, requires a working C++ compiler. See adv
 
 ***I'm seeing `ModuleNotFoundError: No module named 'src'` or `ImportError: bad magic number` when starting a run.***
 
-This will occur if you try to reuse preprocessed files from jiant 0.9 after upgrading to a newer version. Delete your experiment directories and try again, or see the question immediately below for more information.
+This will occur if you try to reuse preprocessed files from `jiant` 0.9 after upgrading to a newer version. Delete your experiment directories and try again, or see the question immediately below for more information.
 
 ***I changed/updated the code, and my experiment broke with errors that don't seem related to the change. What should I do?***
 
